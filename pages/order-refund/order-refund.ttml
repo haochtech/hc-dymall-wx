@@ -1,0 +1,1 @@
+<view class='page'><include src='/components/common/common'></include><include src='/components/header/header'></include><block wx:if='{{isPageShow}}'><view class='body after-navber'><include src='/components/goods/goods_refund.ttml'></include></view></block><include src='/components/footer/footer'></include></view>

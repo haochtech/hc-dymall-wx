@@ -1,0 +1,4 @@
+/* @import '../../import/css0_22.wxss'; */
+page{ min-height: 100%; background: #fff; overflow-x: hidden; 
+
+}

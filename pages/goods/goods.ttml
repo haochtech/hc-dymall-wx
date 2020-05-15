@@ -1,0 +1,90 @@
+<import src='../../wxParse/wxParse.ttml'></import>
+<view class='page'>
+	<include src='/components/common/common'></include>
+	<include src='/components/header/header'></include>
+	<view class='body'>
+		<include src='/components/specifications_model/specifications_model.ttml'></include>
+		<include src='/components/goods/specifications_model.ttml'></include>
+		<include src='/components/quick-navigation/quick-navigation'></include>
+		<view class='{{( ( (show_attr_picker || show)  || no_scroll) ?"no-scroll":"")}}'>
+			<view style='padding-bottom: 120rpx'>
+				<include src='/components/goods/goods_banner.ttml'></include>
+				<include src='/components/goods/goods_info.ttml'></include>
+				<view class='tab-group'>
+					<view class='flex-row tab-group-header'>
+						<view bindtap='tabSwitch' class='flex-grow-1 flex-x-center tab-group-item {{tab_detail}}' data-tab='detail'><text class='flex-y-center'>商品详情</text></view>
+						<block tt:if='{{__is_comment}}'>
+							<view bindtap='tabSwitch' class='flex-grow-1 flex-x-center tab-group-item {{tab_comment}}' data-tab='comment'><text
+								 class='flex-y-center'>评价</text></view>
+						</block>
+					</view>
+					<view class='tab-group-body'>
+						<view class='tab-group-item {{tab_detail}}'>
+							<view class='goods-detail'><template is='wxParse' data='{{wxParseData:detail.nodes}}'></template></view>
+						</view>
+						<view class='tab-group-item {{tab_comment}}'>
+							<view class='comment-count flex-row'>
+								<view class='comment-count-item flex-grow-1 flex-x-center flex-col'>
+									<view>全部</view>
+									<view>({{(comment_count.score_all > 999?"999+":comment_count.score_all)}})</view>
+								</view>
+								<view class='comment-count-item flex-grow-1 flex-x-center flex-col'>
+									<view>好评</view>
+									<view>({{(comment_count.score_3 > 999?"999+":comment_count.score_3)}})</view>
+								</view>
+								<view class='comment-count-item flex-grow-1 flex-x-center flex-col'>
+									<view>中评</view>
+									<view>({{(comment_count.score_2 > 999?"999+":comment_count.score_2)}})</view>
+								</view>
+								<view class='comment-count-item flex-grow-1 flex-x-center flex-col'>
+									<view>差评</view>
+									<view>({{(comment_count.score_1 > 999?"999+":comment_count.score_1)}})</view>
+								</view>
+							</view>
+							<view class='comment-list'>
+								<block tt:for='{{comment_list}}' tt:for-item='item' tt:for-index='index' tt:key='{{item.id}}'>
+									<view class='comment-item flex-row'>
+										<view class='flex-grow-0' style='overflow: visible'>
+											<image mode='aspectFill' src='{{item.avatar_url}}' style='width: 70rpx;height: 70rpx;border-radius: 1000rpx'></image>
+										</view>
+										<view class='flex-grow-1'>
+											<view class='flex-row mb-20'>
+												<view class='flex-grow-1 flex-y-center nickname'>{{item.nickname}}</view>
+												<view class='flex-grow-0 flex-y-center addtime'>{{item.addtime}}</view>
+											</view>
+											<view class='mb-20'>{{item.content}}</view>
+											<block tt:if='{{ (item.pic_list && item.pic_list.length > 0) }}'>
+												<view class='pic-list'>
+													<block tt:for='{{item.pic_list}}' tt:for-item='item' tt:for-index='pic_index' tt:key='{{item.id}}'>
+														<image bindtap='commentPicView' class='pic-item' data-index='{{index}}' data-pic-index='{{pic_index}}' mode='aspectFill'
+														 src='{{item}}'></image>
+													</block>
+												</view>
+											</block>
+											<block tt:if='{{item.reply_content}}'>
+												<view class='reply'>商家: <view class='reply-content'>{{item.reply_content}}</view>
+												</view>
+											</block>
+										</view>
+									</view>
+								</block>
+							</view>
+						</view>
+					</view>
+				</view>
+				<include src='/components/goods/goods_recommend'></include>
+			</view>
+			<block tt:if='{{quick == 1}}'>
+				<include src='/components/shopping_cart/shopping_cart'></include>
+			</block>
+			<block tt:else>
+				<navigator class='cart-nav' openType='redirect' url='/pages/cart/cart'>
+					<image src='{{__wxapp_img.nav.cart.url}}'></image>
+				</navigator>
+				<include src='/components/goods/goods_buy'></include>
+			</block>
+			<include src='/components/common/get-coupon.ttml'></include>
+		</view>
+	</view>
+	<include src='/components/footer/footer'></include>
+</view>

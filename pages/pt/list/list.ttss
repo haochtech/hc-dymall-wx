@@ -1,0 +1,5 @@
+@import '/import/css0_20.ttss';.scroll-view-item { height: 500rpx; }
+#green{ background-color: green; }
+#red{ background-color: red; }
+#yellow{ background-color: yellow; }
+#blue{ background-color: blue; }

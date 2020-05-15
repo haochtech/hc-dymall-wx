@@ -1,0 +1,10 @@
+<import src='../../wxParse/wxParse.ttml'></import>
+<view class='page'>
+	<include src='/components/common/common'></include>
+	<include src='/components/header/header'></include>
+	<view class='body after-navber'>
+		<view style='background: #fff;padding:32rpx 0'><template is='wxParse' data='{{wxParseData:content.nodes}}'>
+            </template></view>
+	</view>
+	<include src='/components/footer/footer'></include>
+</view>

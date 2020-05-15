@@ -1,0 +1,286 @@
+<view class='goods_info_box'>
+  <view class='goods_name'>{{goods.name}}</view>
+  <block tt:if='{{quick == 1}}'>
+    <view class='quick_goods_info'>
+      <view class='view1'>
+        <block tt:if='{{ ( ( (__is_member_price && goods.min_member_price > 0)  && goods.is_negotiable != 1)  && __user_info.level > - 1) }}'>
+          <view class='flex-grow-0 flex-y-center'>
+            <text class='renminbi is_member'>￥</text>
+            <text class='goods_price is_member'>{{goods.min_member_price}}</text>
+            <block tt:if='{{goods.is_level === true}}'>
+              <image class='img' src='{{__wxapp_img.store.member_price.url}}'></image>
+            </block>
+          </view>
+        </block>
+        <block tt:else>
+          <view class='flex-grow-0 flex-y-center'>
+            <text class='renminbi {{( (__user_info.level != - 1 || goods.is_level === false) ?"is_member":"")}}'>￥</text>
+            <text class='goods_price {{( (__user_info.level != - 1 || goods.is_level === false) ?"is_member":"")}}'>{{(goods.min_price
+							> 0?goods.min_price:goods.price)}}</text>
+          </view>
+        </block>
+        <view class='flex-row flex-y-center' style='margin-top:14rpx;'>
+          <view class='flex-grow-0 view2'>
+            <block tt:if='{{ ( (__user_info.level > - 1 || !(goods.min_member_price))  || goods.is_level === false) }}'>
+              <text class='original_price'>￥{{goods.original_price}}</text>
+            </block>
+            <block tt:else>
+              <view class='member_price_box'>
+                <block tt:if='{{__is_member_price === 1}}'>
+                  <text class='member_price_title'>会员价</text>
+                  <text>￥{{(goods.min_member_price > 0?goods.min_member_price:goods.price)}}</text>
+                </block>
+                <block tt:else>
+                  <text class='original_price'>￥{{goods.original_price}}</text>
+                </block>
+              </view>
+            </block>
+          </view>
+          <block tt:if='{{__is_sales}}'>
+            <view class='flex-grow-0 view3'>
+              <text class='sales_title'>销量:</text>
+              <text class='sales'>{{goods.sales}} {{goods.unit}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      <block tt:if='{{goods.use_attr == 1}}'>
+        <view bindtap='showDialogBtn' class='add xuanguige ' data-id='{{goods.id}}'> 选规格
+          <block tt:if='{{goods_num > 0}}'>
+            <view class='guigenum'>{{goods_num}}</view>
+          </block>
+        </view>
+      </block>
+      <block tt:if='{{goods.use_attr == 0}}'>
+        <block tt:if='{{goods_num > 0}}'>
+          <view class='btn_car_num'>
+            <image bindtap='jian' class='carStandard' data-id='{{goods.id}}' src='{{__wxapp_img.store.jian.url}}'></image>
+            <input bindinput='goodNumChange' class='carStandard good_num' data-id='{{goods.id}}' id='num' maxlength='999' type='number' value='{{goods_num}}'></input>
+            <image bindtap='jia' class='carStandard' data-id='{{goods.id}}' src='{{__wxapp_img.store.jia.url}}'></image>
+          </view>
+        </block>
+        <block tt:else>
+          <view bindtap='jia' class='add add_cart' data-id='{{goods.id}}'>加入购物车</view>
+        </block>
+      </block>
+    </view>
+  </block>
+  <block tt:else>
+    <view class='flex-row flex-y-center store_goods_info'>
+      <view class='flex-grow-1 flex-col'>
+        <block tt:if='{{ ( ( (__is_member_price && goods.min_member_price > 0)  && goods.is_negotiable != 1)  && __user_info.level > - 1) }}'>
+          <view class='flex-grow-0 flex-y-center view1'>
+            <block tt:if='{{pageType === "INTEGRAL"}}'>
+              <text style='font-size:16pt;color:red;'>{{goods.integral}}积分 + </text>
+            </block>
+            <block tt:if='{{!(goods.is_negotiable)}}'>
+              <text class='renminbi is_member'>￥</text>
+            </block>
+            <block tt:if='{{goods.mch}}'>
+              <text class='min_price is_member'>{{goods.min_price}}</text>
+            </block>
+            <block tt:else>
+              <text class='min_price is_member'>{{goods.min_member_price}}</text>
+              <block tt:if='{{goods.is_level === true}}'>
+                <image class='img' src='{{__wxapp_img.store.member_price.url}}'></image>
+              </block>
+            </block>
+          </view>
+        </block>
+        <block tt:else>
+          <view class='flex-grow-0 flex-y-center view1'>
+            <block tt:if='{{pageType === "INTEGRAL"}}'>
+              <text style='font-size:16pt;color:red;'>{{goods.integral}}积分 + </text>
+            </block>
+            <block tt:if='{{pageType === "STEP"}}'>
+              <image class='step-icon' src='../../images/detail-price.png'></image>
+              <text class='{{( (__user_info.level != - 1 || goods.is_level === false) ?"is_member":"")}}' style='font-size:16pt;color:#ff9d1e;font-family:DIN'>{{goods.price}}</text>
+              <text style='font-size:11pt;color:#666666;margin-left:24rpx'>原价：</text>
+              <text style='font-size:11pt;color:#666666;text-decoration:line-through'>{{goods.original_price}}</text>
+            </block>
+            <block tt:if='{{ (!(goods.is_negotiable) && pageType !== "STEP") }}'>
+              <text class='renminbi {{( (__user_info.level != - 1 || goods.is_level === false) ?"is_member":"")}}'>￥</text>
+              <text class='min_price {{( (__user_info.level != - 1 || goods.is_level === false) ?"is_member":"")}}'>{{(goods.min_price > 0?goods.min_price:goods.price)}}</text>
+            </block>
+            <block tt:else>
+              <text class='min_price'>{{goods.min_price}}</text>
+            </block>
+          </view>
+        </block>
+        <block tt:if='{{pageType !== "PINTUAN"}}'>
+          <view class='flex-row flex-y-center' style='margin-top:14rpx;'>
+            <block tt:if='{{ (!(goods.is_negotiable) && pageType !== "STEP") }}'>
+              <view class='flex-grow-0 view2'>
+                <block tt:if='{{ ( (__user_info.level > - 1 || !(goods.min_member_price))  || goods.is_level === false) }}'>
+                  <text class='original_price'>￥{{goods.original_price}}</text>
+                </block>
+                <block tt:else>
+                  <view class='member_price_box'>
+                    <block tt:if='{{goods.mch}}'>
+                      <text>￥{{goods.price}}</text>
+                    </block>
+                    <block tt:else>
+                      <block tt:if='{{__is_member_price === 1}}'>
+                        <text class='member_price_title'>会员价</text>
+                        <text>￥{{(goods.min_member_price > 0?goods.min_member_price:goods.price)}}</text>
+                      </block>
+                      <block tt:else>
+                        <text class='original_price'>￥{{goods.original_price}}</text>
+                      </block>
+                    </block>
+                  </view>
+                </block>
+              </view>
+            </block>
+            <block tt:if='{{ ( ( (__is_sales && pageType !== "INTEGRAL")  && goods.is_negotiable != 1)  && pageType !== "STEP") }}'>
+              <view class='flex-grow-0 view2'>
+                <block tt:if='{{pageType === "MIAOSHA"}}'>
+                  <text class='sales'>已抢：</text>
+                </block>
+                <block tt:else>
+                  <text class='sales'>销量：</text>
+                </block>
+                <text class='sales'>{{goods.sales}} {{goods.unit}}</text>
+              </view>
+            </block>
+          </view>
+        </block>
+        <block tt:if='{{pageType === "PINTUAN"}}'>
+          <view class='flex-row flex-y-center' style='margin-top:14rpx;height:60rpx;'>
+            <view class='flex-grow-0 flex-row original-price'>
+              <block tt:if='{{ ( (__user_info.level > - 1 || !(goods.min_member_price))  || goods.is_level === false) }}'>
+                <view class='flex-grow-0' style='text-decoration: line-through;'>¥ {{goods.original_price}}</view>
+              </block>
+              <block tt:else>
+                <view class='member_price_box'>
+                  <block tt:if='{{__is_member_price === 1}}'>
+                    <text class='member_price_title'>会员价</text>
+                    <text>￥{{(goods.min_member_price > 0?goods.min_member_price:goods.price)}}</text>
+                  </block>
+                  <block tt:else>
+                    <text class='original_price'>￥{{goods.original_price}}</text>
+                  </block>
+                </view>
+              </block>
+            </view>
+            <view class='flex-row flex-grow-0 group-descount' style='margin-left:16rpx'>
+              <view class='flex-grow-0 group-descount-one'> {{goods.group_num}}人拼团 </view>
+              <view class='flex-grow-0 group-descount-center'></view>
+              <view class='flex-grow-0 group-descount-tow'> 拼团立省¥{{reduce_price}} </view>
+            </view>
+          </view>
+        </block>
+      </view>
+      <block tt:if='{{ (pageType !== "INTEGRAL" && pageType !== "STEP") }}'>
+        <view class='flex-grow-0'>
+          <button bindtap="showShareModal" class='share_btn' plain='true'>
+            <image class='img' src='{{__wxapp_img.share.share.url}}'></image>
+            <view class='share'>分享</view>
+          </button>
+        </view>
+      </block>
+    </view>
+  </block>
+</view>
+<block tt:if='{{ (goods.service_list && goods.service_list.length > 0) }}'>
+  <view class='bg-white mb-20 flex-row check-list'>
+    <block tt:for='{{goods.service_list}}' tt:for-item='item' tt:for-index='index' tt:key='{{item.id}}'>
+      <view class='check-item flex-y-center flex-row'>
+        <image class='flex-grow-0' src='{{__wxapp_img.store.check.url}}'></image>
+        <text class='flex-grow-1'>{{item}}</text>
+      </view>
+    </block>
+  </view>
+</block>
+<block tt:else>
+  <view class='mb-20'></view>
+</block>
+<block tt:if='{{ ( (quick != 1 && !(goods.is_negotiable))  && __user_info.blacklist !== 1) }}'>
+  <view bindtap='showAttrPicker' class='flex-row flex-y-center select_attrs'>
+    <view class='flex-grow-1 flex-row flex-y-center'>
+      <text>选择</text>
+      <text class='attrs'>规格</text>
+    </view>
+    <view class='flex-grow-0'>
+      <image class='img' src='{{__wxapp_img.store.jiantou_r.url}}'></image>
+    </view>
+  </view>
+</block>
+<block tt:if='{{goods.mch}}'>
+  <view class='flex flex-row mch_shop'>
+    <view class='flex-grow-0 img_box'>
+      <image class='logo' src='{{goods.mch.logo}}'></image>
+    </view>
+    <view class='flex-grow-1'>
+      <view class='name'>{{goods.mch.name}}</view>
+      <view class='shop_info'>
+        <text class='goods_num'>商品数量：{{goods.mch.goods_num}}</text>
+        <block tt:if='{{__is_sales}}'>
+          <text>已售：{{goods.mch.sale_num}}</text>
+        </block>
+      </view>
+    </view>
+    <view class='flex-grow-0 flex-y-center'>
+      <navigator class='enter_shop' openType='redirect' url='/mch/shop/shop?mch_id={{goods.mch.id}}'>进店逛逛</navigator>
+    </view>
+  </view>
+</block>
+<view class='share-modal {{share_modal_active}}'>
+  <view class='share-modal-body'>
+    <view class='flex-row'>
+      <view class='flex-grow-1 flex-x-center'>
+
+        <button class='share-bottom' openType='share' style='height:100%;'>
+          <image src='{{__wxapp_img.share.friend.url}}'></image>
+          <view>分享给朋友</view>
+        </button>
+      </view>
+
+
+      <view class='flex-grow-1 flex-x-center'>
+        <view bindtap='getGoodsQrcode' class='share-bottom'>
+          <image src='{{__wxapp_img.share.qrcode.url}}'></image>
+          <view>生成商品海报</view>
+        </view>
+      </view>
+    </view>
+    <view bindtap='shareModalClose' class='share-modal-close flex-y-center flex-x-center'>关闭</view>
+  </view>
+</view>
+<view bindtap='close' class='modal flex-row {{hide}}'>
+  <view class='flex-y-center' style='width:100%;height:100%;position:relative;'>
+    <image src='{{__wxapp_img.store.close2.url}}' style='width:50rpx;height:50rpx;position:absolute;left:24rpx;top:24rpx'></image>
+    <video autoplay='true' direction='' id='video' src='{{url}}' style='height:80%'></video>
+  </view>
+</view>
+<view class='goods-qrcode-modal {{goods_qrcode_active}}'>
+  <view class='goods-qrcode-body flex-col'>
+    <view class='flex-grow-1' style='position: relative'>
+      <view style='position: absolute;left: 0;top:0;width: 100%;height: 100%;padding: 100rpx 100rpx 60rpx'>
+        <view class='goods-qrcode-box'>
+          <view class='goods-qrcode-loading flex-x-center flex-y-center'>
+            <view class='flex-x-center flex-col'>
+              <image src='{{__wxapp_img.system.loading2.url}}' style='width: 150rpx;height: 150rpx'></image>
+              <view style='color: #888'>海报生成中</view>
+            </view>
+          </view>
+          <image bindtap='goodsQrcodeClick' class='goods-qrcode {{(goods_qrcode?"active":"")}}' data-src='{{goods_qrcode}}' mode='aspectFit' src='{{goods_qrcode}}'></image>
+        </view>
+      </view>
+    </view>
+    <view class='flex-grow-0 flex-col flex-x-center' style='padding: 0 60rpx 80rpx'>
+      <view style='margin-bottom: 20rpx;padding: 0 40rpx'>
+        <block tt:if='{{goods_qrcode}}'>
+          <button bindtap='saveGoodsQrcode' style='background: #ff4544;color: #fff;'> 保存图片 </button>
+        </block>
+        <block tt:else>
+          <button style='opacity: .4'>保存图片</button>
+        </block>
+      </view>
+      <view style='color: #888;font-size: 9pt;text-align: center'>保存至相册</view>
+    </view>
+    <view bindtap='goodsQrcodeClose' class='goods-qrcode-close'>
+      <image src='{{__wxapp_img.store.close2.url}}' style='width: 50rpx;height: 50rpx;display: block'></image>
+    </view>
+  </view>
+</view>

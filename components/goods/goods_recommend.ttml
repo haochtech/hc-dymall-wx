@@ -1,0 +1,30 @@
+<block tt:if='{{ ( (goods_list != undefault && goods_list != "")  && tab_detail == "active") }}'>
+	<view style='background:#f7f7f7;padding-top:35rpx'>
+		<view class='recommend'>
+			<view class='recommend-left'></view>
+			<image class="recommendimg"  src='{{__wxapp_img.store.good_recommend.url}}'></image>
+			<text class='recommend-text'>相关推荐</text>
+			<view class='recommend-right'></view>
+		</view>
+		<view style='padding-top:32rpx'>
+			<view class='goods-list'>
+				<block tt:for='{{goods_list}}' tt:for-item='item' tt:for-index='index' tt:key='{{item.id}}'>
+					<navigator class='goods-item {{(index % 2?"pic-right":"pic-left")}}' openType='navigate' style='font-size:11pt;' url='/pages/goods/goods?id={{item.id}}'>
+						<image class='goods-pic' mode='aspectFill' src='{{item.pic_url}}'></image>
+						<view class='goods-info' style='padding:5rpx 20rpx;'><text class='mb-10 text-more-2' style='height:2.8em;line-height:1.4;'>{{item.name}}</text>
+							<view class='flex-row'>
+								<view class='flex-grow-1' style='color:#ff334b'>￥{{item.price}}</view>
+								<block tt:if='{{__is_sales}}'>
+									<view class='flex-grow-0 fs-sm' style='color:#999;'>已售{{item.sales}}</view>
+								</block>
+							</view>
+						</view>
+					</navigator>
+				</block>
+			</view>
+			<view class='loading-more {{(is_loading?"active":"")}}'>
+				<image src='{{__wxapp_img.system.loading.url}}'></image>
+			</view>
+		</view>
+	</view>
+</block>
